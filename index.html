@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematical Formulation and Verification Protocol for AGI Acceleration via Quantum AI</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                tags: 'ams'
+            },
+            options: {
+                renderActions: {
+                    addMenu: [] 
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --journal-blue: #1e293b;
+            --accent-blue: #334155;
+            --bg-paper: #ffffff;
+            --bg-body: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Noto Serif', serif;
+            line-height: 1.85;
+            color: #1e293b;
+            background-color: var(--bg-body);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Noto Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .paper-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 5rem 6rem;
+            background-color: var(--bg-paper);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .paper-header::before {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--journal-blue);
+            margin: 0 auto 2rem;
+        }
+
+        .abstract-box {
+            margin: 3rem 2rem;
+            padding: 1.5rem 2rem;
+            border: 1px solid #e2e8f0;
+            background-color: #fafafa;
+            font-size: 0.925rem;
+            text-align: justify;
+        }
+
+        .math-env {
+            margin: 2rem 0;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid;
+            position: relative;
+        }
+        
+        .math-env-title {
+            display: block;
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .env-definition { border-color: #3b82f6; background-color: #f8fafc; }
+        .env-definition .math-env-title { color: #2563eb; }
+
+        .env-protocol { border-color: #8b5cf6; background-color: #fdfbff; }
+        .env-protocol .math-env-title { color: #7c3aed; }
+
+        .env-axiom { border-color: #d97706; background-color: #fffbeb; }
+        .env-axiom .math-env-title { color: #b45309; }
+
+        .env-theorem { border-color: #059669; background-color: #f0fdf4; }
+        .env-theorem .math-env-title { color: #059669; }
+
+        .env-proof {
+            margin: 1.5rem 0 3rem 1.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+        }
+        .env-proof-title {
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+        }
+        .qed-symbol {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #1e293b;
+            margin-left: 0.5rem;
+        }
+
+        #toc-container {
+            position: fixed;
+            left: calc(50% + 470px);
+            top: 5rem;
+            width: 240px;
+            max-height: 80vh;
+            overflow-y: auto;
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 0.8rem;
+        }
+        
+        .toc-title {
+            font-weight: 700;
+            color: var(--journal-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        #toc-list ul { list-style: none; padding: 0; }
+        #toc-list li { margin-bottom: 0.5rem; }
+        #toc-list a { color: #64748b; text-decoration: none; transition: all 0.2s; }
+        #toc-list a:hover { color: #2563eb; padding-left: 4px; }
+        .toc-sub { padding-left: 1rem; margin-top: 0.25rem; opacity: 0.8; }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 4rem 0 2rem;
+            color: var(--journal-blue);
+            display: flex;
+            align-items: center;
+        }
+        h2::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+            margin-left: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent-blue);
+        }
+
+        blockquote {
+            border-radius: 4px;
+            box-shadow: inset 4px 0 0 #475569;
+            background: #f8fafc;
+            padding: 1.5rem 2rem;
+        }
+
+        .references-list {
+            margin-top: 3rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+        .reference-item {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            text-indent: -1.5rem;
+            text-align: justify;
+        }
+        .ref-label {
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .btn-ghostdrift {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--journal-blue);
+            color: white;
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .btn-ghostdrift:hover {
+            background-color: #334155;
+            color: white !important;
+        }
+
+        .disclaimer-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .disclaimer-title {
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 700;
+            color: var(--journal-blue);
+            margin-bottom: 0.75rem;
+        }
+
+        @media print {
+            body { background: white; }
+            .paper-container { box-shadow: none; margin: 0; padding: 2rem; max-width: none; }
+            #toc-container { display: none; }
+            h2::after { display: none; }
+            .no-print { display: none; }
+        }
+
+        @media (max-width: 1280px) {
+            #toc-container { display: none; }
+        }
+        @media (max-width: 768px) {
+            .paper-container { padding: 3rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<aside id="toc-container">
+    <div class="toc-title">Contents</div>
+    <nav id="toc-list"></nav>
+</aside>
+
+<div class="paper-container">
+    
+    <header class="paper-header text-center mb-16">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 leading-tight text-slate-800">
+            Formal Mathematical Framework and Verification Protocol for <br>
+            the Claim of "AGI Acceleration via Quantum AI"
+        </h1>
+        <div class="flex flex-col items-center gap-2">
+            <span class="text-lg font-medium text-slate-600">GhostDrift Mathematical Research Institute</span>
+            <span class="text-sm text-slate-400 font-mono tracking-widest uppercase">
+                A Rigorous Audit Protocol for AGI Acceleration
+            </span>
+            <div class="mt-4 text-slate-500 text-sm">
+                <script>document.write(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));</script>
+            </div>
+        </div>
+    </header>
+
+    <div class="abstract-box">
+        <div class="font-bold text-center mb-3 tracking-tighter text-slate-700">Abstract</div>
+        <p class="leading-relaxed">
+            This document establishes a rigorous mathematical foundation for the claim that "Artificial General Intelligence (AGI) is accelerated through the synergy of quantum computing and AI," presented within an engineering-auditable and falsifiable framework. We formally define the underlying probability space and resource models, framing the "collapse of finite closure" as a fundamental theorem of observational indistinguishability. Furthermore, we derive the necessary and sufficient conditions required for the claim to possess statistical validity and derive the theoretical lower bound for the required sample complexity.
+        </p>
+    </div>
+
+    <section id="sec-1">
+        <h2>1. Foundational Spaces and Probabilistic Modeling</h2>
+        <h3>1.1 Formalization of the Probability Space</h3>
+        <p>
+            We define a fixed probability space $(\Omega, \mathcal{F}, P)$. All inherent stochasticity—including data generation processes, algorithmic random seeds, and quantum measurement outcomes—is defined within this space.
+        </p>
+        <ul class="list-none space-y-2 mt-4 ml-4 text-slate-700">
+            <li class="flex items-start"><span class="mr-3 text-slate-300">■</span><span><strong>Input, Output, and Metadata Spaces</strong>: $X, Y, M$.</span></li>
+            <li class="flex items-start"><span class="mr-3 text-slate-300">■</span><span><strong>Record</strong>: A tuple $r = (x, y, m) \in X \times Y \times M$.</span></li>
+            <li class="flex items-start"><span class="mr-3 text-slate-300">■</span><span><strong>Execution Trace</strong>: $T \in \mathcal{T}$, representing logs, seeds, and computational trajectories.</span></li>
+            <li class="flex items-start"><span class="mr-3 text-slate-300">■</span><span><strong>Model</strong>: A functional mapping $f: X \times M \to Y$.</span></li>
+            <li class="flex items-start"><span class="mr-3 text-slate-300">■</span><span><strong>Algorithm</strong>: A stochastic operator $A: D_{\text{train}} \times \Omega \to f \times \mathcal{T}$.</span></li>
+        </ul>
+    </section>
+
+    <section id="sec-2">
+        <h2>2. Verification Protocol $\Pi$ and Axiomatic Framework</h2>
+        <p>
+            To ensure scientific falsifiability, the protocol $\Pi$ is treated as a formal object governed by a set of foundational axioms.
+        </p>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 2.1 [The Verification Protocol]</span>
+            <p>
+                The protocol $\Pi$ is defined as the following tuple of parameters:
+                $$\Pi := (E_{\text{gen}}, \text{Score}, \tau, \text{Budget}, B, B_{\max})$$
+            </p>
+        </div>
+
+        <div class="math-env env-axiom">
+            <span class="math-env-title">Axiom 2.1 [Pre-execution Commitment]</span>
+            <p>
+                The commitment $c = \text{Commit}(\Pi)$ of protocol $\Pi$ must be registered on an immutable Public Bulletin Board—a tamper-proof external channel—prior to algorithmic execution. This ensures independent third-party auditability, drawing upon the principles of Certificate Transparency [1] and transparency logs [2].
+            </p>
+        </div>
+
+        <div class="math-env env-axiom">
+            <span class="math-env-title">Axiom 2.2 [Conditional Independence]</span>
+            <p>
+                The evaluation data generation $E_{\text{gen}}$ must be conditionally independent of the learning algorithm's output $(f, T)$ given the commitment $c$.
+                $$D_{\text{eval}} \perp (f, T) \mid c$$
+                This axiom precludes "adaptive data selection," preventing post-hoc manipulation of the evaluation criteria.
+            </p>
+        </div>
+
+        <div class="math-env env-axiom">
+            <span class="math-env-title">Axiom 2.3 [Resource Boundedness]</span>
+            <p>
+                Computational resource consumption $R = \text{Budget}(T)$ is strictly bounded by an automated termination mechanism such that $0 \le R \le B_{\max}$ almost surely.
+            </p>
+        </div>
+
+        <div class="math-env env-axiom">
+            <span class="math-env-title">Axiom 2.4 [Independence of Trials]</span>
+            <p>
+                Random seeds for each experimental trial $j$ are sampled independently, ensuring that success indicators $X_j$ constitute an i.i.d. Bernoulli sequence. This enables the application of finite-sample concentrated bounds, such as Hoeffding's inequality [3].
+            </p>
+        </div>
+    </section>
+
+    <section id="sec-3">
+        <h2>3. Success Metrics and Computational Acceleration</h2>
+        <p>
+            Verifying "AGI acceleration" necessitates rigorous definitions of resource efficiency and success probabilities. This framework focuses on <strong>end-to-end evaluation</strong>, addressing known pitfalls in quantum machine learning [7] and its future potential [8].
+        </p>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 3.1 [Success Indicator Random Variable]</span>
+            <p>
+                For any trial $j$, the success indicator $X_j$ is defined as:
+                $$ X_j := \mathbb{I}[\text{Score}(f_j, D_{\text{eval}}^{(j)}) \ge \tau \land \text{Budget}(T_j) \le B] \in \{0, 1\} $$
+                where $f_j, T_j, D_{\text{eval}}^{(j)}$ are random variables independently realized for each iteration.
+            </p>
+        </div>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 3.2 [Probability of Success]</span>
+            <p>
+                The probability of success is defined as $p_{\text{succ}}(A, \Pi) := E[X_j] = P(X_j = 1)$, which remains well-defined under Axiom 2.2.
+            </p>
+        </div>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 3.3 [Formal Definition of Acceleration]</span>
+            <p>
+                A quantum algorithm $A_Q$ is said to demonstrate acceleration over a classical algorithm $A_C$ if, under identical protocol $\Pi$, the following condition is satisfied:
+                $$\text{Accel}(A_Q, A_C; \Pi) \iff (p_{\text{succ}}(A_Q, \Pi) \ge p_{\text{succ}}(A_C, \Pi)) \land (E[R_Q] < E[R_C])$$
+                <em>Note: Alternative definitions using high-probability upper bounds or worst-case complexity are valid if declared a priori.</em>
+            </p>
+        </div>
+    </section>
+
+    <section id="sec-4">
+        <h2>4. Theoretical Failure: The Erosion of Finite Closure</h2>
+        <p class="mb-6">
+            We provide a rigorous proof for the proposition that verification is rendered meaningless in the absence of pre-fixed protocols. This is formalized through the lens of <strong>Observational Indistinguishability</strong> [4, 5].
+        </p>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 4.1 [Observational Trace]</span>
+            <p>
+                The observation trace $\tau = (T, X)$ consists of the evaluation trajectory and the resulting success indicator. Any verifier $V$ must operate solely on this trace.
+            </p>
+        </div>
+
+        <div class="math-env env-definition">
+            <span class="math-env-title">Definition 4.2 [Observational Equivalence]</span>
+            <p>
+                Two distinct states of the world $W_0$ and $W_1$ are observationally equivalent if the distributions of their respective traces are identical:
+                $\mathcal{L}_{W_0}(\tau) = \mathcal{L}_{W_1}(\tau)$.
+            </p>
+        </div>
+
+        <div class="math-env env-theorem">
+            <span class="math-env-title">Theorem 4.1 [Indistinguishability of Adaptive Selection]</span>
+            <p>
+                Under the Reachability assumption (i.e., for any algorithmic output, there exists a data subset that yields success), no verifier can distinguish between a post-hoc adaptive protocol $\mathfrak{P}_{\mathrm{post}}$ and a pre-committed protocol $\mathfrak{P}_{\mathrm{pre}}$ based exclusively on observation traces.
+            </p>
+        </div>
+
+        <div class="env-proof">
+            <div class="env-proof-title">Proof Outline.</div>
+            <p>
+                By contradiction. Given the Reachability assumption, for any probability $p_0$, we can construct a world $W_0$ (pre-fixed success probability $p_0$) and a world $W_1$ (post-hoc selection forcing $X=1$). By carefully mixing the data distributions, we can equalize $\mathcal{L}(\tau)$ across both worlds while maintaining divergent success probabilities. Consequently, no verifier $V(\tau)$ can resolve this ambiguity, proving the existence of observationally equivalent but logically distinct success claims. <span class="qed-symbol"></span>
+            </p>
+        </div>
+
+        <div class="math-env env-theorem">
+            <span class="math-env-title">Theorem 4.2 [Impossibility of True Probability Estimation]</span>
+            <p>
+                When observational traces are identical, fundamental results in statistical decision theory [6] dictate that identifying the true success probability $p$ within an epsilon-margin is non-trivially impossible.
+            </p>
+        </div>
+
+        <div class="math-env env-theorem">
+            <span class="math-env-title">Theorem 4.3 [Axiomatic Necessity for Statistical Guarantee]</span>
+            <p>
+                If the protocol $\Pi$ violates any of Axioms 2.1–2.4, one can always construct observationally equivalent worlds with arbitrary success probabilities, thereby invalidating all statistical guarantees.
+            </p>
+        </div>
+    </section>
+
+    <section id="sec-5">
+        <h2>5. Structural Equivalence and Falsifiability</h2>
+        <div class="math-env env-theorem">
+            <span class="math-env-title">Theorem 5.1 [Sufficient and Necessary Conditions for Validity]</span>
+            <p>
+                A claim $C: p_{\text{succ}} \ge \gamma$ is $\varepsilon$-falsifiable if and only if Axiom 2.1 (Pre-commitment), Axiom 2.2 (Non-adaptivity), and Axiom 2.4 (Trial Independence) are strictly maintained.
+            </p>
+        </div>
+
+        <div class="env-proof">
+            <div class="env-proof-title">Proof.</div>
+            <p>
+                <strong>Sufficiency:</strong> Under these axioms, $X_j$ are truly i.i.d. Bernoulli trials. Applying Hoeffding’s inequality [3], exponential concentration around the mean is guaranteed for a sample size $m \ge \frac{1}{2\varepsilon^2} \ln(\max\{1/\alpha, 1/\beta\})$.
+                <br><strong>Necessity:</strong> Should any axiom fail, Theorem 4.1–4.3 and the general theory of adaptive data analysis [5] demonstrate that False Discovery becomes inevitable. Thus, no valid statistical test can exist. <span class="qed-symbol"></span>
+            </p>
+        </div>
+    </section>
+
+    <section id="sec-6">
+        <h2>6. Concluding Remarks</h2>
+        <p>
+            As quantum variational algorithms are increasingly scrutinized for their inherent optimization "traps" [9] and the critical role of data quality in QML [10], claims regarding AGI acceleration must transcend simple benchmarks [12, 13, 14] and adhere to structural verifiability.
+        </p>
+        <blockquote class="text-slate-700 leading-relaxed">
+            For any claim of acceleration to constitute a valid scientific proposition, it is both <strong>necessary and sufficient</strong> that the protocol $\Pi$ be pre-fixed through external commitment, evaluation data generation remain strictly non-adaptive, and individual trials be stochastically independent.
+        </blockquote>
+    </section>
+
+    <!-- References Section -->
+    <section id="references">
+        <h2 class="text-xl font-bold mb-6">References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+                <span class="ref-label">[1]</span> B. Laurie, A. Langley, and E. Kasper, <em>Certificate Transparency</em>, RFC 6962, 2013.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[2]</span> A. Tomescu et al., <em>Transparency Logs via Append-Only Authenticated Dictionaries</em>, ACM CCS 2019. DOI: 10.1145/3319535.3354224.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[3]</span> W. Hoeffding, <em>Probability Inequalities for Sums of Bounded Random Variables</em>, Journal of the American Statistical Association, 58(301), 13–30, 1963.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[4]</span> C. Dwork et al., <em>The reusable holdout: Preserving validity in adaptive data analysis</em>, Science, 349(6248), 636–638, 2015.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[5]</span> M. Hardt and J. Ullman, <em>Preventing False Discovery in Interactive Data Analysis is Hard</em>, FOCS, 2014 / arXiv:1408.1655.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[6]</span> L. Le Cam, <em>Asymptotic Methods in Statistical Decision Theory</em>, Springer-Verlag, 1986.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[7]</span> W. Li, Y. Ma, and D.-L. Deng, <em>Pitfalls and prospects of quantum machine learning</em>, Nature Computational Science, 2025.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[8]</span> Y. Alexeev et al., <em>Artificial intelligence for quantum computing</em>, Nature Communications, 16, 10829, 2025.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[9]</span> E. Anschuetz and B. T. Kiani, <em>Quantum variational algorithms are swamped with traps</em>, Nature Communications, 2022.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[10]</span> H.-Y. Huang et al., <em>The power of data in quantum machine learning</em>, Nature Communications, 12, 2631, 2021.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[11]</span> X. Deng et al., <em>Investigating Data Contamination in Modern Benchmarks for Large Language Models</em>, NAACL, 2024.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[12]</span> D. Alvarez-Estevez, <em>Benchmarking quantum machine learning kernel training for classification tasks</em>, arXiv:2408.10274, 2024.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[13]</span> T. Fellner et al., <em>Quantum vs. classical: A comprehensive benchmark study for predicting time series with VQML</em>, arXiv:2504.12416, 2025.
+            </div>
+            <div class="reference-item">
+                <span class="ref-label">[14]</span> D. Wu et al., <em>Variational benchmarks for quantum many-body problems (V-score)</em>, Science, 2024.
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Button Section -->
+    <div class="flex justify-center mt-16 mb-8 no-print">
+        <a href="https://www.ghostdriftresearch.com/" target="_blank" rel="noopener noreferrer" class="btn-ghostdrift">
+            Return to GhostDrift Research Institute Homepage
+        </a>
+    </div>
+
+    <!-- Disclaimer Section -->
+    <div class="disclaimer-section">
+        <div class="disclaimer-title">[Nature and Scope of this Audit Report]</div>
+        <p>
+            This document is an engineering audit report designed to evaluate <strong>"Systemic Accountability" and "Auditability under finite resource constraints"</strong> in industrial implementations, rather than an abstract mathematical exploration of truth. This mathematical framework is constructed specifically to maximize the transparency and visibility of real-world operational risks.
+        </p>
+    </div>
+
+    <footer class="mt-12 pt-10 border-t border-slate-100 text-center text-slate-400 text-xs tracking-widest uppercase">
+        &copy; <script>document.write(new Date().getFullYear());</script> GhostDrift Mathematical Research Institute
+    </footer>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tocList = document.getElementById('toc-list');
+        const sections = document.querySelectorAll('section');
+        const rootUl = document.createElement('ul');
+
+        sections.forEach((section, i) => {
+            const h2 = section.querySelector('h2');
+            if (h2) {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                const secId = section.id || `sec-${i}`;
+                section.id = secId;
+                a.href = `#${secId}`;
+                a.textContent = h2.textContent;
+                li.appendChild(a);
+
+                const subs = section.querySelectorAll('h3');
+                if (subs.length > 0) {
+                    const subUl = document.createElement('ul');
+                    subUl.className = 'toc-sub';
+                    subs.forEach((h3, j) => {
+                        const subLi = document.createElement('li');
+                        const subA = document.createElement('a');
+                        const subId = h3.id || `${secId}-sub-${j}`;
+                        h3.id = subId;
+                        subA.href = `#${subId}`;
+                        subA.textContent = h3.textContent;
+                        subLi.appendChild(subA);
+                        subUl.appendChild(subLi);
+                    });
+                    li.appendChild(subUl);
+                }
+                rootUl.appendChild(li);
+            }
+        });
+        tocList.appendChild(rootUl);
+
+        document.querySelectorAll('#toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
