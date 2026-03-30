@@ -4,6 +4,9 @@ This repository provides a **formal, audit-oriented mathematical framework** for
 
 The authoritative content of this protocol is contained within the index.html file.
 
+🌐 GhostDrift Mathematical Institute (Official)
+[https://www.ghostdriftresearch.com/](https://www.ghostdriftresearch.com/)
+
 ## **1\. Core Objective**
 
 The purpose of this document is **not** to argue for or against the validity of any specific AGI claim. Instead, it defines the **necessary and sufficient conditions** under which such a claim becomes statistically falsifiable and engineering-auditable.
